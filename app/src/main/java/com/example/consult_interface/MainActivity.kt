@@ -64,10 +64,113 @@ class MainActivity : ComponentActivity() {
 }
 // (UZIEL) C'est la partie ou l'utilisateur entre son age et autre
 @Composable
-fun User_InformationScreen(navController: NavController)
-{
+fun User_InformationScreen(navController: NavController) {
+    var selectedLanguage by remember { mutableStateOf("English") }
+    var preferredRace by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    var time by remember { mutableStateOf("24:00") }
+    var duration by remember { mutableStateOf("24:00") }
+    var notes by remember { mutableStateOf("") }
 
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
+    ) {
+        Text(
+            text = "Appointment Booking",
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Bold
+        )
+        LinearProgressIndicator(
+            progress = 0.33f,
+            modifier = Modifier.fillMaxWidth(),
+            color = Color(0xFF8A56AC),
+            trackColor = Color(0xFFE0D8F6)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(text = "What language would you like?")
+        ExposedDropdownMenuBox(
+            expanded = false,
+            onExpandedChange = {}
+        ) {
+            TextField(
+                value = selectedLanguage,
+                onValueChange = { selectedLanguage = it },
+                modifier = Modifier.fillMaxWidth(),
+                readOnly = true,
+                label = { Text("Language") },
+                trailingIcon = {
+                    Icon(Icons.Default.ArrowDropDown, contentDescription = null)
+                }
+            )
+        }
+
+        Text(text = "Preferred race?")
+        OutlinedTextField(
+            value = preferredRace,
+            onValueChange = { preferredRace = it },
+            label = { Text("Enter race") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Text(text = "Appointment Details", fontWeight = FontWeight.SemiBold)
+
+        OutlinedTextField(
+            value = date,
+            onValueChange = { date = it },
+            label = { Text("DATE") },
+            placeholder = { Text("YY/MM/DD") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = time,
+            onValueChange = { time = it },
+            label = { Text("TIME") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = duration,
+            onValueChange = { duration = it },
+            label = { Text("DURATION") },
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        OutlinedTextField(
+            value = notes,
+            onValueChange = { notes = it },
+            label = { Text("Notes") },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(100.dp)
+        )
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = { /* Action pour revenir ou quitter */ },
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Back")
+            }
+
+            Button(
+                onClick = { navController.navigate("Interface_2_consult") },
+                shape = RoundedCornerShape(12.dp)
+            ) {
+                Text("Next")
+            }
+        }
+    }
 }
+
 
 // FASSILATOU
 @Composable
