@@ -38,6 +38,8 @@ import androidx.compose.material3.DropdownMenuItem
 
 
 
+
+
 // Activité principale
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -71,6 +73,72 @@ fun User_InformationScreen(navController: NavController) {
     var expanded by remember { mutableStateOf(false) }
     val languageOptions = listOf("English", "French", "Spanish")
 
+    val title = when (selectedLanguage) {
+        "French" -> "Réservation de rendez-vous"
+        "Spanish" -> "Reserva de cita"
+        else -> "Appointment Booking"
+    }
+    val languageQuestion = when (selectedLanguage) {
+        "French" -> "Quelle langue souhaitez-vous ?"
+        "Spanish" -> "¿Qué idioma prefieres?"
+        else -> "What language would you like?"
+    }
+    val languageLabel = when(selectedLanguage) {
+        "French" -> "Langue"
+        "Spanish" -> "Idioma"
+        else -> "Language"
+    }
+    val preferredRaceText = when (selectedLanguage) {
+        "French" -> "Race préférée ?"
+        "Spanish" -> "Raza preferida?"
+        else -> "Preferred race?"
+    }
+    val preferredRaceLabel = when(selectedLanguage) {
+        "French" -> "Entrez la race"
+        "Spanish" -> "Ingrese raza"
+        else -> "Enter race"
+    }
+    val appointmentDetails = when (selectedLanguage) {
+        "French" -> "Détails du rendez-vous"
+        "Spanish" -> "Detalles de la cita"
+        else -> "Appointment Details"
+    }
+    val dateLabel = when(selectedLanguage) {
+        "French" -> "DATE"
+        "Spanish" -> "FECHA"
+        else -> "DATE"
+    }
+    val datePlaceholder = when(selectedLanguage) {
+        "French" -> "JJ/MM/AAAA"
+        "Spanish" -> "DD/MM/AAAA"
+        else -> "YY/MM/DD"
+    }
+    val timeLabel = when(selectedLanguage) {
+        "French" -> "HEURE"
+        "Spanish" -> "HORA"
+        else -> "TIME"
+    }
+    val durationLabel = when(selectedLanguage) {
+        "French" -> "DURÉE"
+        "Spanish" -> "DURACIÓN"
+        else -> "DURATION"
+    }
+    val notesLabel = when(selectedLanguage) {
+        "French" -> "NOTES"
+        "Spanish" -> "NOTAS"
+        else -> "NOTES"
+    }
+    val backText = when(selectedLanguage) {
+        "French" -> "Retour"
+        "Spanish" -> "Atrás"
+        else -> "Back"
+    }
+    val nextText = when(selectedLanguage) {
+        "French" -> "Suivant"
+        "Spanish" -> "Siguiente"
+        else -> "Next"
+    }
+
     var preferredRace by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("24:00") }
@@ -84,7 +152,7 @@ fun User_InformationScreen(navController: NavController) {
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
         Text(
-            text = "Appointment Booking",
+            text = title,
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
@@ -98,7 +166,7 @@ fun User_InformationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = "What language would you like?", fontWeight = FontWeight.SemiBold)
+        Text(text = languageQuestion, fontWeight = FontWeight.SemiBold)
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = !expanded }
@@ -107,7 +175,7 @@ fun User_InformationScreen(navController: NavController) {
                 value = selectedLanguage,
                 onValueChange = {},
                 readOnly = true,
-                label = { Text("Language") },
+                label = { Text(languageLabel) },
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
@@ -132,42 +200,42 @@ fun User_InformationScreen(navController: NavController) {
             }
         }
 
-        Text(text = "Preferred race?", fontWeight = FontWeight.SemiBold)
+        Text(text = preferredRaceText, fontWeight = FontWeight.SemiBold)
         OutlinedTextField(
             value = preferredRace,
             onValueChange = { preferredRace = it },
-            label = { Text("Enter race") },
+            label = { Text(preferredRaceLabel) },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Text(text = "Appointment Details", fontWeight = FontWeight.SemiBold)
+        Text(text = appointmentDetails, fontWeight = FontWeight.SemiBold)
 
         OutlinedTextField(
             value = date,
             onValueChange = { date = it },
-            label = { Text("DATE") },
-            placeholder = { Text("YY/MM/DD") },
+            label = { Text(dateLabel) },
+            placeholder = { Text(datePlaceholder) },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = time,
             onValueChange = { time = it },
-            label = { Text("TIME") },
+            label = { Text(timeLabel) },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = duration,
             onValueChange = { duration = it },
-            label = { Text("DURATION") },
+            label = { Text(durationLabel) },
             modifier = Modifier.fillMaxWidth()
         )
 
         OutlinedTextField(
             value = notes,
             onValueChange = { notes = it },
-            label = { Text("Notes") },
+            label = { Text(notesLabel) },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(100.dp)
@@ -181,14 +249,14 @@ fun User_InformationScreen(navController: NavController) {
                 onClick = { /* Action pour revenir ou quitter */ },
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Back")
+                Text(backText)
             }
 
             Button(
                 onClick = { navController.navigate("Interface_2_consult") },
                 shape = RoundedCornerShape(12.dp)
             ) {
-                Text("Next")
+                Text(nextText)
             }
         }
     }
