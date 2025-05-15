@@ -20,7 +20,6 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -28,14 +27,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.material3.*
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowDropDown
+import androidx.compose.material3.DropdownMenuItem
+
+
+
 
 // Activité principale
 class MainActivity : ComponentActivity() {
@@ -62,10 +63,14 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-// (UZIEL) C'est la partie ou l'utilisateur entre son age et autre
+// (UZIEL) C'est la partie ou l'utilisateur entre son age et autre 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun User_InformationScreen(navController: NavController) {
     var selectedLanguage by remember { mutableStateOf("English") }
+    var expanded by remember { mutableStateOf(false) }
+    val languageOptions = listOf("English", "French", "Spanish")
+
     var preferredRace by remember { mutableStateOf("") }
     var date by remember { mutableStateOf("") }
     var time by remember { mutableStateOf("24:00") }
@@ -83,6 +88,7 @@ fun User_InformationScreen(navController: NavController) {
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold
         )
+
         LinearProgressIndicator(
             progress = 0.33f,
             modifier = Modifier.fillMaxWidth(),
@@ -92,24 +98,41 @@ fun User_InformationScreen(navController: NavController) {
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(text = "What language would you like?")
+        Text(text = "What language would you like?", fontWeight = FontWeight.SemiBold)
         ExposedDropdownMenuBox(
-            expanded = false,
-            onExpandedChange = {}
+            expanded = expanded,
+            onExpandedChange = { expanded = !expanded }
         ) {
             TextField(
                 value = selectedLanguage,
-                onValueChange = { selectedLanguage = it },
-                modifier = Modifier.fillMaxWidth(),
+                onValueChange = {},
                 readOnly = true,
                 label = { Text("Language") },
                 trailingIcon = {
-                    Icon(Icons.Default.ArrowDropDown, contentDescription = null)
-                }
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .menuAnchor()
             )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false }
+            ) {
+                languageOptions.forEach { language ->
+                    DropdownMenuItem(
+                        text = { Text(language) },
+                        onClick = {
+                            selectedLanguage = language
+                            expanded = false
+                        }
+                    )
+                }
+            }
         }
 
-        Text(text = "Preferred race?")
+        Text(text = "Preferred race?", fontWeight = FontWeight.SemiBold)
         OutlinedTextField(
             value = preferredRace,
             onValueChange = { preferredRace = it },
